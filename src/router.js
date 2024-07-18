@@ -5,7 +5,7 @@ import AboutUs from "./pages/AboutUs";
 import { createBrowserRouter } from "react-router-dom";
 import Booking from "./components/booking/Booking";
 import FAQs from "./pages/FAQs";
-
+import ClubOwnerDashboard from "./pages/club-owner/ClubOwnerDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -22,14 +22,18 @@ export const router = createBrowserRouter([
   },
   {
     path: "/about-us",
-    element: <AboutUs />
+    element: <AboutUs />,
   },
   {
     path: "/booking",
-    element: <Booking />
+    element: <Booking />,
   },
   {
     path: "/faqs",
-    element: <FAQs />
-  }
+    element: <FAQs />,
+  },
+  {
+    path: "club-owner",
+    element: <ClubOwnerDashboard />,
+  },
 ]);

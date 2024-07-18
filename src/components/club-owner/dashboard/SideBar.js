@@ -6,7 +6,7 @@ import faqIcon from "./img/faq.png";
 
 function Sidebar() {
   return (
-    <div className="w-1/5 h-svh bg-[#222222]">
+    <div className="w-1/5  bg-[#222222]">
       <div className="m-6 ">
         <h1 className="text-[#878787] mb-4">Menu</h1>
         <div className="text-white">
