@@ -4,7 +4,6 @@ import Register from "./pages/Register";
 import AboutUs from "./pages/AboutUs";
 import { createBrowserRouter } from "react-router-dom";
 import Booking from "./components/booking/Booking";
-import FAQs from "./pages/FAQs";
 import ClubOwnerDashboard from "./pages/club-owner/ClubOwnerDashboard";
 import Pricing from "./pages/Pricing";
 
@@ -33,14 +32,11 @@ export const router = createBrowserRouter([
     element: <Booking />
   },
   {
-    path: "/faqs",
-    element: <FAQs />,
-  },
-  {
     path: "club-owner",
     element: <ClubOwnerDashboard />,
   },
-  path: "/pricing",
-  element: <Pricing />
+  {
+    path: "/pricing",
+    element: <Pricing />
   }
 ]);
