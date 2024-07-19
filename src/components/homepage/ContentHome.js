@@ -31,7 +31,7 @@ const ContentHome = () => {
       <div>
         <div>
           <h3>PROMOTION</h3>
-          <h1>We Provide You Best Badminton Yards Options</h1>
+          <h1>We Provide You Best Badminton Courts Options</h1>
           <div>Are you a badminton enthusiast looking for the perfect place to play? Look no further! Our state-of-the-art badminton courts are now available at unbeatable promotional rates. Sign up for our membership program during the promotion and receive exclusive perks, including priority booking and free equipment rentals.</div>
           <button className='bg-[#DF6951] px-[32px] py-[16px] text-white rounded-[10px] hover:scale-110 transition-all ease-out'>View options</button>
         </div>
