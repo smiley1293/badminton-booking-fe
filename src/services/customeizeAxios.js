@@ -8,8 +8,6 @@ const instance = axios.create({
 instance.interceptors.response.use(function (response) {
   return response.data ? response.data : { statusCode: response.status }
 }, function (error) {
-  console.log("<<<check log", error.response)
-  console.log("<<<check", error.message)
   let res = {};
   if (error.response) {
     // The request was made and the server responded with a status code
@@ -27,7 +25,8 @@ instance.interceptors.response.use(function (response) {
   } else {
     console.log('Error', error.message);
   }
-  return Promise.reject(error);
+  return res;
+  // return Promise.reject(error);
 })
 
 export default instance

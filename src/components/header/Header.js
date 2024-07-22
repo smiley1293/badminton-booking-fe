@@ -4,6 +4,7 @@ import headerImage from "./img/headerImage.png"
 import logo from "./img/logo.png"
 import waveIcon from "./img/waveIcon.png"
 import peopleLike from './img/peopleLike.png';
+import Avatar from '../avatar/Avatar';
 
 
 // import { useSelector } from "react-redux";
@@ -13,6 +14,8 @@ const Header = () => {
   // const accessToken = useSelector((state) => state.auth.accessToken);
   // const [opne, setOpen] = useState(false);
 
+  // check if token exist
+  const token = localStorage.getItem('token');
   return (
     <div>
       <div className='relative'>
@@ -36,14 +39,15 @@ const Header = () => {
               </li>
             </ul>
             {/* button */}
-            <div className='text-white flex items-center justify-center gap-[40px]'>
+            {token ? (<div><Avatar /></div>) : (<div className='text-white flex items-center justify-center gap-[40px]'>
               <button className='px-[28px] py-[17px] bg-[#DF6951] rounded-[10px] hover:bg-transparent hover:border-white hover:border-solid hover:border-[1px] hover:transition hover:ease-in-out hover:outline-white '>
                 <Link to={"/register"}>Sign up</Link>
               </button>
               <button className='hover:text-[#DF6951] transition-all'>
                 <Link to={"/login"}>Sign in</Link>
               </button>
-            </div>
+            </div>)}
+
           </div>
 
         </header>
