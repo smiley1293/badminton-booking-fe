@@ -2,7 +2,8 @@ import logo from "./img/Logo.png";
 import placeHolder from "./img/placeholder.png";
 import masking from "./img/masking.png";
 import ClubCard from "./ClubCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getOwnerClubs } from "../../../services/ClubApi";
 const clubs = [
   {
     id: 1,
@@ -32,30 +33,22 @@ const clubs = [
     title: "Club 4",
     subtitle: "Black Noir",
   },
-  {
-    id: 5,
-    image:
-      "https://img.freepik.com/free-photo/cute-ai-generated-cartoon-bunny_23-2150288883.jpg?t=st=1721294846~exp=1721298446~hmac=fe51e1cdb9ab97ed7e31bd7e865714ad63f59590dda3c767ef985a008018f321&w=740",
-    title: "Club 4",
-    subtitle: "Black Noir",
-  },
-  {
-    id: 6,
-    image:
-      "https://img.freepik.com/free-photo/cute-ai-generated-cartoon-bunny_23-2150288883.jpg?t=st=1721294846~exp=1721298446~hmac=fe51e1cdb9ab97ed7e31bd7e865714ad63f59590dda3c767ef985a008018f321&w=740",
-    title: "Club 4",
-    subtitle: "Black Noir",
-  },
 ];
 
 function Content() {
-  const [visibleClubs, setVisibleClubs] = useState(4);
+  const [club, setClub] = useState([]);
 
-  const showMoreClubs = () => {
-    setVisibleClubs(visibleClubs + 4);
+  useEffect(() => {
+    getAllClubs();
+  }, []);
+
+  const getAllClubs = async () => {
+    let res = await getOwnerClubs(2);
+    setClub(res);
   };
+
   return (
-    <div className="w-full h-full  bg-[#F4F1E4]">
+    <div className="w-full h-full min-h-screen bg-[#F4F1E4]">
       <div className="flex w-full">
         <img src={logo} className="mt-[13px] ml-[34px]"></img>
         <img
@@ -85,25 +78,15 @@ function Content() {
         </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {clubs.slice(0, visibleClubs).map((club) => (
+          {club.map((club) => (
             <ClubCard
               key={club.id}
-              image={club.image}
-              title={club.title}
-              subtitle={club.subtitle}
+              image={club.imageLink}
+              title={club.name}
+              subtitle={club.address}
             />
           ))}
         </div>
-        {visibleClubs < clubs.length && (
-          <div className="flex justify-center mt-6">
-            <button
-              onClick={showMoreClubs}
-              className="px-4 py-2 bg-[#DF6951] text-white rounded-lg"
-            >
-              Get More
-            </button>
-          </div>
-        )}
 
         <div className="w-2/3 mt-[35px]">
           <div className="flex">
@@ -130,7 +113,7 @@ function Content() {
                 </tr>
               </thead>
               <tbody>
-                {clubs.slice(0, visibleClubs).map((club) => (
+                {clubs.slice(0, 4).map((club) => (
                   <tr key={club.id} className="border-t border-gray-200">
                     <td className="px-4 py-3">{club.id}</td>
                     <td className="px-4 py-3">{club.title}</td>
