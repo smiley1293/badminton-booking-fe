@@ -1,8 +1,15 @@
 import logo from "./img/Logo.png";
-import placeHolder from "./img/placeholder.png";
 import masking from "./img/masking.png";
 import ClubCard from "./ClubCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getOwnerClubs } from "../../../services/ClubApi";
+import { Link, useNavigate } from "react-router-dom";
+import Avatar from "../../avatar/Avatar";
+import * as Dialog from "@radix-ui/react-dialog";
+import CreateClubDialog from "./CreateClubDialog";
+
+const token = localStorage.getItem("token");
+
 const clubs = [
   {
     id: 1,
@@ -32,38 +39,64 @@ const clubs = [
     title: "Club 4",
     subtitle: "Black Noir",
   },
-  {
-    id: 5,
-    image:
-      "https://img.freepik.com/free-photo/cute-ai-generated-cartoon-bunny_23-2150288883.jpg?t=st=1721294846~exp=1721298446~hmac=fe51e1cdb9ab97ed7e31bd7e865714ad63f59590dda3c767ef985a008018f321&w=740",
-    title: "Club 4",
-    subtitle: "Black Noir",
-  },
-  {
-    id: 6,
-    image:
-      "https://img.freepik.com/free-photo/cute-ai-generated-cartoon-bunny_23-2150288883.jpg?t=st=1721294846~exp=1721298446~hmac=fe51e1cdb9ab97ed7e31bd7e865714ad63f59590dda3c767ef985a008018f321&w=740",
-    title: "Club 4",
-    subtitle: "Black Noir",
-  },
 ];
 
 function Content() {
-  const [visibleClubs, setVisibleClubs] = useState(4);
+  const navigate = useNavigate();
 
-  const showMoreClubs = () => {
-    setVisibleClubs(visibleClubs + 4);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [club, setClub] = useState([]);
+
+  const handleOpenDialog = () => setIsDialogOpen(true);
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    getAllClubs();
   };
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
+    getAllClubs();
+  }, []);
+
+  const getAllClubs = async () => {
+    let res = await getOwnerClubs(2);
+    //catch error
+    if (res.status === 400) {
+      console.log(res.data);
+      return;
+    }
+    console.log(res);
+
+    setClub(res);
+  };
+
   return (
-    <div className="w-full h-full  bg-[#F4F1E4]">
+    <div className="w-full h-full min-h-screen bg-[#F4F1E4]">
       <div className="flex w-full">
         <img src={logo} className="mt-[13px] ml-[34px]"></img>
-        <img
-          src={placeHolder}
-          className="size-12 mt-[13px] ml-auto mr-10"
-        ></img>
+
+        {/* avatar */}
+        <div className="mt-[13px] ml-auto mr-10">
+          {token ? (
+            <div>
+              <Avatar />
+            </div>
+          ) : (
+            <div className="text-white flex items-center justify-center gap-[40px]">
+              <button className="px-[28px] py-[17px] bg-[#DF6951] rounded-[10px] hover:bg-transparent hover:border-white hover:border-solid hover:border-[1px] hover:transition hover:ease-in-out hover:outline-white ">
+                <Link to={"/register"}>Sign up</Link>
+              </button>
+              <button className="hover:text-[#DF6951] transition-all">
+                <Link to={"/login"}>Sign in</Link>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
       <div className="m-6 ">
+        {/* Banner */}
         <div className="relative ">
           <img
             src={masking}
@@ -75,7 +108,7 @@ function Content() {
               Manage all your clubs and booking everyday
             </h1>
             <button className="px-[14px] py-[11.5px] bg-[#DF6951] text-white rounded-lg">
-              Back to home
+              <Link to={"/"}> Back to home</Link>
             </button>
           </div>
         </div>
@@ -84,26 +117,44 @@ function Content() {
           All clubs
         </h1>
 
+        {/* Club cards  */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {clubs.slice(0, visibleClubs).map((club) => (
+          {club.map((club) => (
             <ClubCard
               key={club.id}
-              image={club.image}
-              title={club.title}
-              subtitle={club.subtitle}
+              image={club.imageLink}
+              title={club.name}
+              subtitle={club.address}
             />
           ))}
+          {club.length < 3 && (
+            <div>
+              <Dialog.Root open={isDialogOpen} onOpenChange={handleOpenDialog}>
+                <Dialog.Trigger>
+                  <button className="bg-[#DF6951] rounded-lg shadow-lg p-2 hover:shadow-2xl text-white">
+                    Add new club
+                  </button>
+                </Dialog.Trigger>
+                <Dialog.Portal>
+                  <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
+                  <Dialog.Content className="fixed left-1/2 top-1/2 w-[800px]  p-8 bg-slate-100 -translate-x-1/2 -translate-y-1/2 rounded-md shadow">
+                    <Dialog.DialogTitle className="flex justify-between items-center mb-8">
+                      <h1 className="text-2xl font-semibold">Add new club</h1>
+                      <button
+                        onClick={handleCloseDialog}
+                        className="text-2xl font-semibold"
+                      >
+                        X
+                      </button>
+                    </Dialog.DialogTitle>
+
+                    <CreateClubDialog onClose={handleCloseDialog} />
+                  </Dialog.Content>
+                </Dialog.Portal>
+              </Dialog.Root>
+            </div>
+          )}
         </div>
-        {visibleClubs < clubs.length && (
-          <div className="flex justify-center mt-6">
-            <button
-              onClick={showMoreClubs}
-              className="px-4 py-2 bg-[#DF6951] text-white rounded-lg"
-            >
-              Get More
-            </button>
-          </div>
-        )}
 
         <div className="w-2/3 mt-[35px]">
           <div className="flex">
@@ -130,7 +181,7 @@ function Content() {
                 </tr>
               </thead>
               <tbody>
-                {clubs.slice(0, visibleClubs).map((club) => (
+                {clubs.slice(0, 4).map((club) => (
                   <tr key={club.id} className="border-t border-gray-200">
                     <td className="px-4 py-3">{club.id}</td>
                     <td className="px-4 py-3">{club.title}</td>
