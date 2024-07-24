@@ -4,4 +4,8 @@ const getOwnerClubs = (ownerId) => {
   return axios.get(`/club/get-owned-club/${ownerId}`);
 };
 
-export { getOwnerClubs };
+const createClub = (club) => {
+  return axios.post("/club/create", club);
+};
+
+export { getOwnerClubs, createClub };

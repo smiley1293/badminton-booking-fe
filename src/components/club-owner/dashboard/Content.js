@@ -1,9 +1,15 @@
 import logo from "./img/Logo.png";
-import placeHolder from "./img/placeholder.png";
 import masking from "./img/masking.png";
 import ClubCard from "./ClubCard";
 import { useEffect, useState } from "react";
 import { getOwnerClubs } from "../../../services/ClubApi";
+import { Link } from "react-router-dom";
+import Avatar from "../../avatar/Avatar";
+import * as Dialog from "@radix-ui/react-dialog";
+import CreateClubDialog from "./CreateClubDialog";
+
+const token = localStorage.getItem("token");
+
 const clubs = [
   {
     id: 1,
@@ -36,7 +42,14 @@ const clubs = [
 ];
 
 function Content() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [club, setClub] = useState([]);
+
+  const handleOpenDialog = () => setIsDialogOpen(true);
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    getAllClubs();
+  };
 
   useEffect(() => {
     getAllClubs();
@@ -51,12 +64,27 @@ function Content() {
     <div className="w-full h-full min-h-screen bg-[#F4F1E4]">
       <div className="flex w-full">
         <img src={logo} className="mt-[13px] ml-[34px]"></img>
-        <img
-          src={placeHolder}
-          className="size-12 mt-[13px] ml-auto mr-10"
-        ></img>
+
+        {/* avatar */}
+        <div className="mt-[13px] ml-auto mr-10">
+          {token ? (
+            <div>
+              <Avatar />
+            </div>
+          ) : (
+            <div className="text-white flex items-center justify-center gap-[40px]">
+              <button className="px-[28px] py-[17px] bg-[#DF6951] rounded-[10px] hover:bg-transparent hover:border-white hover:border-solid hover:border-[1px] hover:transition hover:ease-in-out hover:outline-white ">
+                <Link to={"/register"}>Sign up</Link>
+              </button>
+              <button className="hover:text-[#DF6951] transition-all">
+                <Link to={"/login"}>Sign in</Link>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
       <div className="m-6 ">
+        {/* Banner */}
         <div className="relative ">
           <img
             src={masking}
@@ -77,6 +105,7 @@ function Content() {
           All clubs
         </h1>
 
+        {/* Club cards  */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {club.map((club) => (
             <ClubCard
@@ -86,6 +115,30 @@ function Content() {
               subtitle={club.address}
             />
           ))}
+          {club.length < 3 && (
+            <div>
+              <Dialog.Root open={isDialogOpen} onOpenChange={handleOpenDialog}>
+                <Dialog.Trigger>
+                  <button className="bg-[#DF6951] rounded-lg shadow-lg p-2 hover:shadow-2xl text-white">
+                    Add new club
+                  </button>
+                </Dialog.Trigger>
+                <Dialog.Portal>
+                  <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
+                  <Dialog.Content className="fixed left-1/2 top-1/2 w-[800px]  p-8 bg-slate-100 -translate-x-1/2 -translate-y-1/2 rounded-md shadow">
+                    <Dialog.DialogTitle className="flex justify-between items-center mb-8">
+                      <h1 className="text-2xl font-semibold">Add new club</h1>
+                      <Dialog.DialogClose className="text-2xl font-semibold">
+                        X
+                      </Dialog.DialogClose>
+                    </Dialog.DialogTitle>
+
+                    <CreateClubDialog onClose={handleCloseDialog} />
+                  </Dialog.Content>
+                </Dialog.Portal>
+              </Dialog.Root>
+            </div>
+          )}
         </div>
 
         <div className="w-2/3 mt-[35px]">
