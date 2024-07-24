@@ -1,27 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import google_icon from "./img/googleLogo.png"
 import login_img from "./img/LoginImage.png"
 import line from "./img/line.png"
 import { Link } from 'react-router-dom';
 import { loginApi } from '../services/UserApi';
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [loadingAPI, setLoadingAPI] = useState(false);
+
+  // check token
+  useEffect(() => {
+    let token = localStorage.getItem("token")
+    if (token) {
+      navigate("/")
+    }
+  }, [])
 
   const isValid = email && password;
 
   const handleLogin = async () => {
-    alert("Please enter")
+    // alert("Please enter")
     if (!email || !password) {
       toast.error("Email or password is required");
       return;
     }
+    setLoadingAPI(true);
     let res = await loginApi(email, password);
+    console.log("<<<<check res: ", res);
     if (res && res.accessToken) {
       localStorage.setItem("token", res.accessToken);
+      navigate("/");
+    } else {
+      if (res && res.status === 400) {
+        console.log(res.data)
+        toast.error(res.data)
+      }
     }
+    setLoadingAPI(false);
     console.log(res);
   }
   return (
@@ -82,7 +104,9 @@ const Login = () => {
               </div>
 
               <button type='button' className={`w-full text-[#F4F1E4] bg-[#F8939C] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-[50px] text-[19px] px-5 py-[15px] text-center dark:bg-primary-600 dark:focus:ring-primary-800 mb-[20px]  transition-all ease-in-out ${isValid ? 'dark:hover:bg-[#000000] hover:cursor-pointer' : 'cursor-not-allowed bg-gray-400'}`} disabled={!isValid}
-                onClick={() => handleLogin()}> Login </button>
+                onClick={() => handleLogin()}>
+                {loadingAPI && <i className='fa-solid fa-sync fa-spin'></i>}
+                &nbsp; Login </button>
               <p className=" text-sm text-center font-light text-[#3D4449] dark:text-gray-400">
                 Don't have account? <Link className="font-medium text-primary-600 hover:underline dark:text-primary-500 cursor-not-allowed" to={"/Register"}>Sign Up</Link>
               </p>
