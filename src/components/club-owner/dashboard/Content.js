@@ -57,6 +57,13 @@ function Content() {
 
   const getAllClubs = async () => {
     let res = await getOwnerClubs(2);
+    //catch error
+    if (res.status === 400) {
+      console.log(res.data);
+      return;
+    }
+    console.log(res);
+
     setClub(res);
   };
 
@@ -96,7 +103,7 @@ function Content() {
               Manage all your clubs and booking everyday
             </h1>
             <button className="px-[14px] py-[11.5px] bg-[#DF6951] text-white rounded-lg">
-              Back to home
+              <Link to={"/"}> Back to home</Link>
             </button>
           </div>
         </div>

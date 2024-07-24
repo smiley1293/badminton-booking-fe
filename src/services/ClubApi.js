@@ -1,7 +1,7 @@
 import axios from "./customeizeAxios";
 
-const getOwnerClubs = (ownerId) => {
-  return axios.get(`/club/get-owned-club/${ownerId}`);
+const getOwnerClubs = () => {
+  return axios.get(`/club/get-owned-club`);
 };
 
 const createClub = (club) => {
