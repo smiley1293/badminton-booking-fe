@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import { loginApi } from '../services/UserApi';
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
-
 const Login = () => {
   const navigate = useNavigate();
 

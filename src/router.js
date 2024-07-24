@@ -6,8 +6,10 @@ import { createBrowserRouter } from "react-router-dom";
 import Booking from "./components/booking/Booking";
 import ClubOwnerDashboard from "./pages/club-owner/ClubOwnerDashboard";
 import Pricing from "./pages/Pricing";
+
 import Profile from "./components/avatar/Profile";
 
+import PaymentCallback from "./pages/PaymentCallback"
 
 export const router = createBrowserRouter([
   {
@@ -41,7 +43,10 @@ export const router = createBrowserRouter([
     element: <Pricing />
   },
   {
+
     path: "/profile",
     element: <Profile />
+    path: "/payment-callback",
+    element: <PaymentCallback />
   }
 ]);

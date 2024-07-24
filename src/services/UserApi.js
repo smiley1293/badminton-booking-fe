@@ -4,6 +4,7 @@ const loginApi = (email, password) => {
   return axios.post("/login", { email, password })
 }
 
+
 const getProfileApi = () => {
   const token = localStorage.getItem("token");
   return axios.get("/profile", {
@@ -25,3 +26,13 @@ const updateProfileApi = (fullname, phoneNumber) => {
 
 
 export { loginApi, getProfileApi, updateProfileApi }
+
+const registerApi = (email, password, fullname, phoneNumber) => {
+  return axios.post("/register", {
+    email, 
+    password, 
+    fullname,
+    phoneNumber
+  })
+}
+export { loginApi, registerApi }
