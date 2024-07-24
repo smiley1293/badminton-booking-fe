@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import check_icon from "./img/check_icon.png"
-import HeaderOutside from '../components/header/HeaderOutsite';
 import { subscriptionApi } from '../services/SubscriptionApi';
 import { useState } from 'react';
 import { paymentApi } from '../services/PaymentApi';
 import { toast } from 'react-toastify'
+import Header from '../components/header/Header';
+import pricingBanner from "../components/header/img/pricing_image.png"
 
 const Pricing = () => {
   const accessToken = localStorage.getItem("token");
@@ -19,7 +20,7 @@ const Pricing = () => {
     let res = await subscriptionApi(2)
     if (res.status === 402) {
       let pay = await paymentApi(2, res.data, true)
-      if(pay){
+      if (pay) {
         console.log(pay)
         window.location.href = pay
       }
@@ -119,7 +120,10 @@ const Pricing = () => {
   )
   return (
     <div>
-      <HeaderOutside></HeaderOutside>
+      <div className='relative'>
+        <img className='h-[476px] w-full object-cover' src={pricingBanner} alt="" />
+        <Header />
+      </div>
       {displayPricing}
     </div>
   );

@@ -42,6 +42,7 @@ const Login = () => {
         toast.error(res.data)
       }
     }
+    toast.success("Login successfully")
     setLoadingAPI(false);
     console.log(res);
   }
