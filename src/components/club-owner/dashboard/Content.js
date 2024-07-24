@@ -3,7 +3,7 @@ import masking from "./img/masking.png";
 import ClubCard from "./ClubCard";
 import { useEffect, useState } from "react";
 import { getOwnerClubs } from "../../../services/ClubApi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Avatar from "../../avatar/Avatar";
 import * as Dialog from "@radix-ui/react-dialog";
 import CreateClubDialog from "./CreateClubDialog";
@@ -42,6 +42,8 @@ const clubs = [
 ];
 
 function Content() {
+  const navigate = useNavigate();
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [club, setClub] = useState([]);
 
@@ -52,6 +54,9 @@ function Content() {
   };
 
   useEffect(() => {
+    if (!token) {
+      navigate("/");
+    }
     getAllClubs();
   }, []);
 
@@ -135,9 +140,12 @@ function Content() {
                   <Dialog.Content className="fixed left-1/2 top-1/2 w-[800px]  p-8 bg-slate-100 -translate-x-1/2 -translate-y-1/2 rounded-md shadow">
                     <Dialog.DialogTitle className="flex justify-between items-center mb-8">
                       <h1 className="text-2xl font-semibold">Add new club</h1>
-                      <Dialog.DialogClose className="text-2xl font-semibold">
+                      <button
+                        onClick={handleCloseDialog}
+                        className="text-2xl font-semibold"
+                      >
                         X
-                      </Dialog.DialogClose>
+                      </button>
                     </Dialog.DialogTitle>
 
                     <CreateClubDialog onClose={handleCloseDialog} />
