@@ -8,8 +8,6 @@ const createClub = (club) => {
   return axios.post("/club/create", club);
 };
 
-
-
 const fetchAllClubs = () => {
   return axios.get('club/get-all')
 }
