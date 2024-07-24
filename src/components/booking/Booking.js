@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { fetchAllClubs } from '../../services/ClubApi';
 
-const Booking = () => {
+const Booking = (props) => {
+  useEffect(() => {
+    getClubs();
+  })
+
+  const getClubs = async () => {
+    let res = await fetchAllClubs();
+    console.log("check res: ", res);
+  }
   return (
     <div>
-      Đây là trang booking
+
     </div>
   );
 };
