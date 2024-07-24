@@ -6,6 +6,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Booking from "./components/booking/Booking";
 import ClubOwnerDashboard from "./pages/club-owner/ClubOwnerDashboard";
 import Pricing from "./pages/Pricing";
+import Profile from "./components/avatar/Profile";
 
 
 export const router = createBrowserRouter([
@@ -38,5 +39,9 @@ export const router = createBrowserRouter([
   {
     path: "/pricing",
     element: <Pricing />
+  },
+  {
+    path: "/profile",
+    element: <Profile />
   }
 ]);
