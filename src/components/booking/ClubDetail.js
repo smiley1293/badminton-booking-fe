@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import Header from "../header/Header";
-import { useNavigate, useParams } from "react-router-dom";
-import { fetchClubById } from "../../services/ClubApi";
+import React, { useEffect, useState } from 'react';
+import Header from '../header/Header';
+import { useNavigate, useParams } from 'react-router-dom';
+import { fetchClubById } from '../../services/ClubApi';
+import ClubComment from '../comment/CommentSection';
 import BookingDialogButton from "./BookingDialogButton";
 
 const ClubDetail = () => {
@@ -43,6 +44,7 @@ const ClubDetail = () => {
       <div className="mt-5 flex">
         <BookingDialogButton id={id} />
       </div>
+      <ClubComment clubId={id}/> 
     </div>
   );
 };

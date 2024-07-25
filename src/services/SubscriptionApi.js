@@ -1,7 +1,10 @@
 import axios from "./customeizeAxios";
 
-const subscriptionApi = (id) => {
-  return axios.post(`/subscription/add/${id}`)
+const subscriptionApi = () => {
+  return axios.post(`/subscription/add`)
+}
+const checkSubscriptionApi = () => {
+  return axios.get(`/subscription/check-upgragded`)
 }
 
-export { subscriptionApi }
+export { subscriptionApi, checkSubscriptionApi }
