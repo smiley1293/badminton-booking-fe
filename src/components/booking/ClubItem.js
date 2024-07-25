@@ -36,9 +36,6 @@ const ClubItem = (props) => {
           </div>
         </div>
       </div>
-      <div className="mt-5 flex">
-        <BookingDialogButton id={props.id} />
-      </div>
     </div>
   );
 };
