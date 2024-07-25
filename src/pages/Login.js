@@ -35,6 +35,7 @@ const Login = () => {
     console.log("<<<<check res: ", res);
     if (res && res.accessToken) {
       localStorage.setItem("token", res.accessToken);
+      toast.success("Login successfully")
       navigate("/");
     } else {
       if (res && res.status === 400) {
@@ -42,7 +43,7 @@ const Login = () => {
         toast.error(res.data)
       }
     }
-    toast.success("Login successfully")
+
     setLoadingAPI(false);
     console.log(res);
   }
