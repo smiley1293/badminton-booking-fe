@@ -1,18 +1,21 @@
 import axios from "./customeizeAxios";
 
-const addCommentApi = (comment) => {
-    return axios.post("/comment/add", {
-        comment
+const addCommentApi = (detail,clubId,stars,parentCommentId) => {
+    return axios.post("/comment", {
+        detail: detail,
+        clubId: clubId,
+        stars: stars,
+        parentCommentId: parentCommentId,
     })
 }
-const addReplyApi = (comment,replyId) => {
-    return axios.post("/comment/addReply", {
-        comment
-    })
+const checkValidApi = (clubId) => {
+    return axios.get(`/comment/check-valid/${clubId}`)
+}
+const getClubCommentsApi = (clubId) => {
+    return axios.get(`/comment/${clubId}`)
+}
+const getRepliesApi = (commentId) => {
+    return axios.get(`/comment/get-replies/${commentId}`)
 }
 
-const getCommentsApi = (clubId) => {
-    return axios.get(`/comment/get/${clubId}`)
-}
-
-export { addCommentApi, addReplyApi, getCommentsApi }
+export { addCommentApi, checkValidApi, getClubCommentsApi, getRepliesApi }

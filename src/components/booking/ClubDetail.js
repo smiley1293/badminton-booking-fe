@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../header/Header';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchClubById } from '../../services/ClubApi';
-import ClubComment from '../comment/Comment';
+import ClubComment from '../comment/CommentSection';
 const ClubDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate()
