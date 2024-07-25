@@ -42,7 +42,7 @@ const ClubDetail = () => {
         </button>
       </div>
       <div className="mt-5 flex">
-        <BookingDialogButton id={id} />
+        <BookingDialogButton id={id} pricerPerHour={club.pricerPerHour} />
       </div>
       <ClubComment clubId={id}/> 
     </div>
