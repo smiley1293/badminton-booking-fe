@@ -62,7 +62,7 @@ const Booking = (props) => {
 
   return (
     <div className=''>
-<<<<<<<<< Temporary merge branch 1
+
       <div>
         <div className='relative'>
           <img className='h-[476px] w-full object-cover' src={clubHeader} alt="" />
@@ -80,7 +80,7 @@ const Booking = (props) => {
                     pricerPerHour={item.pricerPerHour}
                     ownerName={item.owner.fullName}
                     id={item.id}
-              />
+                  />
                 </div>
               )
             })
