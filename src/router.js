@@ -10,6 +10,7 @@ import Pricing from "./pages/Pricing";
 import Profile from "./components/avatar/Profile";
 
 import PaymentCallback from "./pages/PaymentCallback";
+import ClubDetail from "./components/booking/ClubDetail";
 
 export const router = createBrowserRouter([
   {
@@ -50,4 +51,8 @@ export const router = createBrowserRouter([
     path: "/payment-callback",
     element: <PaymentCallback />,
   },
+  {
+    path: "/club/:id",
+    element: <ClubDetail />
+  }
 ]);

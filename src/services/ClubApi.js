@@ -12,4 +12,8 @@ const fetchAllClubs = () => {
   return axios.get('club/get-all')
 }
 
-export { getOwnerClubs, createClub, fetchAllClubs };
+const fetchClubById = (id) => {
+  return axios.get(`club/get/${id}`)
+}
+
+export { getOwnerClubs, createClub, fetchAllClubs, fetchClubById };
