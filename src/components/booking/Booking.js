@@ -77,9 +77,9 @@ const Booking = (props) => {
               placeholder="Enter your address"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className='p-[10px] border rounded'
+              className='pl-[20px] p-[10px] bg-[#FAF7F3] placeholder-[#5B453A] placeholder-opacity-55 w-[500px] border rounded border-[#3A3404]'
             />
-            <button onClick={handleSearch} className='ml-[10px] p-[10px] bg-blue-500 text-white rounded'>
+            <button onClick={handleSearch} className='ml-[10px] p-[10px] bg-transparent border border-[#5B453A] hover:bg-[#5B453A] hover:text-white transition-all text-[#5B453A] rounded'>
               Search
             </button>
           </div>
