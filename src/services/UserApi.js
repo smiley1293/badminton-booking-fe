@@ -42,6 +42,10 @@ const registerApi = (email, password, fullname, phoneNumber) => {
 const checkSubscriptionApi = async () => {
   return await axios.get("/subscription/check-upgraded");
 };
+
+const getAllProfilesApi = async () => {
+  return await axios.get("/accounts");
+};
 export {
   loginApi,
   getProfileApi,
@@ -49,4 +53,5 @@ export {
   updateProfileApi,
   registerApi,
   checkSubscriptionApi,
+  getAllProfilesApi,
 };
