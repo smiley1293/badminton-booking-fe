@@ -39,4 +39,14 @@ const registerApi = (email, password, fullname, phoneNumber) => {
   });
 };
 
-export { loginApi, getProfileApi, getOtherProfileApi, updateProfileApi, registerApi };
+const checkSubscriptionApi = async () => {
+  return await axios.get("/subscription/check-upgraded");
+};
+export {
+  loginApi,
+  getProfileApi,
+  getOtherProfileApi,
+  updateProfileApi,
+  registerApi,
+  checkSubscriptionApi,
+};

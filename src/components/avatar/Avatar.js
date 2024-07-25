@@ -1,10 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { checkSubscriptionApi } from "../../services/UserApi";
 
 const Avatar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const checkSubscription = async () => {
+    let res = await checkSubscriptionApi();
+    return res;
+  };
+
+  useEffect(() => {
+    checkSubscription().then((res) => {
+      console.log(res);
+      if (res.statusCode === 200) {
+        setIsSubscribed(true);
+      }
+    });
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -35,6 +51,14 @@ const Avatar = () => {
           <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
             Settings
           </Link>
+          {isSubscribed && (
+            <Link
+              to={"/club-owner"}
+              className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+            >
+              Dashboard
+            </Link>
+          )}
           <button
             onClick={() => handleLogout()}
             className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
