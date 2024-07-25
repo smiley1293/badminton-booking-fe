@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { toast } from 'react-toastify'
-import { addCommentApi, getRepliesApi } from "../../services/CommentApi";
+import { addCommentApi, getRepliesApi, likeCommentApi } from "../../services/CommentApi";
 import StarRatings from "react-star-ratings";
 function CompareDate(date1, date2) {
   const diffInMilliseconds = Math.abs(date2 - date1);
@@ -17,6 +17,7 @@ function CompareDate(date1, date2) {
 
 const Message = ({ comment, clubId }) => {
   const [onHovered, setHovered] = useState(false);
+  const [onLikeHovered, setLikeHovered] = useState(false);
   const [isOpened, setOpened] = useState(false);
   const [replies, setReplies] = useState([]);
   const FetchReplies = async () => {
@@ -38,6 +39,18 @@ const Message = ({ comment, clubId }) => {
     console.log(comment);
     FetchReplies();
   }, []);
+  const Like = async () => {
+    try {
+      let res = await likeCommentApi(comment.id)
+      if (res) {
+        toast.info("Comment liked");
+        comment.likes += 1
+      }
+    } catch (e) {
+      console.log(e);
+      toast.error("Can't like message");
+    }
+  };
 
   const AddComment = async (message, id) => {
     try {
@@ -91,10 +104,26 @@ const Message = ({ comment, clubId }) => {
             </div>
             <div style={{ fontSize: "22px" }}>{comment.detail}</div>
           </div>
-          <div className="d-flex justify-content-between">
-            <div>
+          <div className="w-100">
+            <div className="grid grid-cols-12 gap-1">
               <div
-                className="fw-lighter"
+                className="fw-lighter col-auto"
+                onClick={() => {
+                  Like()
+                }}
+                onMouseEnter={() => {
+                  setLikeHovered(true);
+                }}
+                onMouseOut={() => {
+                  setLikeHovered(false);
+                }}
+                style={{
+                  cursor: "default",
+                  color: `${onLikeHovered ? "rgb(133, 58, 232)" : "rgb(0,0,0)"}`,
+                }}
+              >Like ({comment.likes})</div>
+              <div
+                className="fw-lighter w-[300px]"
                 onClick={() => {
                   setOpened(!isOpened);
                   console.log(replies);

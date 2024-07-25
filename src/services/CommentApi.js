@@ -17,5 +17,7 @@ const getClubCommentsApi = (clubId) => {
 const getRepliesApi = (commentId) => {
     return axios.get(`/comment/get-replies/${commentId}`)
 }
-
-export { addCommentApi, checkValidApi, getClubCommentsApi, getRepliesApi }
+const likeCommentApi = (commentId) => {
+    return axios.put(`/comment/like/${commentId}`)
+}
+export { addCommentApi, checkValidApi, getClubCommentsApi, getRepliesApi, likeCommentApi }
