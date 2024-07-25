@@ -25,6 +25,9 @@ const ClubItem = (props) => {
           <p className='text-[#309555] '>{props.ownerName}</p>
         </div>
       </div>
+      <button onClick={props.onAddToWishlist} className='mt-[10px] p-[5px] bg-green-500 text-white rounded'>
+        Add to Wishlist
+      </button>
     </div>
   );
 };

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { getProfileApi, updateProfileApi } from '../../services/UserApi';
 import { toast } from 'react-toastify';
+import { getWislist } from '../../services/ClubApi';
+import ClubItem from '../booking/ClubItem';
 
 const Profile = (props) => {
   const [profile, setProfile] = useState({ fullName: "", phoneNumber: "" });
   const [isEditing, setIsEditing] = useState(false);
+  const [wishlist, setWishlist] = useState([]);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -16,6 +19,7 @@ const Profile = (props) => {
       }
     };
     fetchProfile();
+    fetchWishlist();
   }, [])
 
   const handleChange = (e) => {
@@ -40,6 +44,22 @@ const Profile = (props) => {
 
   if (!profile) {
     return <div>Loading...</div>
+  }
+
+
+
+  const fetchWishlist = async () => {
+    try {
+      const res = await getWislist();
+      if (res && res.length > 0) {
+        setWishlist(res.map(item => item.club));
+      } else {
+        setWishlist([]);
+      }
+    } catch (error) {
+      console.error("Failed to fetch wishlist", error);
+      setWishlist([]);
+    }
   }
 
   return (
@@ -82,6 +102,25 @@ const Profile = (props) => {
           <button onClick={() => setIsEditing(true)}>Chỉnh sửa</button>
         </div>
       )}
+      <div className=''>
+        <div>Your favorite clubs</div>
+        <div className='mx-[60px] grid gap-x-[30px] grid-cols-3 my-[30px]'>
+          {wishlist.length > 0 ? (
+            wishlist.map((club, index) => (
+              <ClubItem
+                key={index}
+                imageLink={club.imageLink}
+                name={club.name}
+                address={club.address}
+                pricerPerHour={club.pricerPerHour}
+                ownerName={club.owner ? club.owner.fullName : 'Owner'}
+              />
+            ))
+          ) : (
+            <p>Không có câu lạc bộ nào trong danh sách yêu thích.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
