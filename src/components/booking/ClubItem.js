@@ -36,6 +36,9 @@ const ClubItem = (props) => {
           </div>
         </div>
       </div>
+      <button onClick={props.onAddToWishlist} className='mt-[10px] p-[5px] bg-green-500 text-white rounded'>
+        Add to Wishlist
+      </button>
     </div>
   );
 };
