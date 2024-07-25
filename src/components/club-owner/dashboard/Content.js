@@ -7,45 +7,20 @@ import { Link, useNavigate } from "react-router-dom";
 import Avatar from "../../avatar/Avatar";
 import * as Dialog from "@radix-ui/react-dialog";
 import CreateClubDialog from "./CreateClubDialog";
+import { getOwnerBooking } from "../../../services/BookingApi";
+import { React } from "react";
+import { format } from "date-fns";
+import { checkSubscriptionApi } from "../../../services/UserApi";
 
 const token = localStorage.getItem("token");
-
-const clubs = [
-  {
-    id: 1,
-    image:
-      "https://img.freepik.com/free-photo/cute-ai-generated-cartoon-bunny_23-2150288883.jpg?t=st=1721294846~exp=1721298446~hmac=fe51e1cdb9ab97ed7e31bd7e865714ad63f59590dda3c767ef985a008018f321&w=740",
-    title: "Club 1",
-    subtitle: "Homelander",
-  },
-  {
-    id: 2,
-    image:
-      "https://img.freepik.com/free-photo/cute-ai-generated-cartoon-bunny_23-2150288883.jpg?t=st=1721294846~exp=1721298446~hmac=fe51e1cdb9ab97ed7e31bd7e865714ad63f59590dda3c767ef985a008018f321&w=740",
-    title: "Club 2",
-    subtitle: "Starlight",
-  },
-  {
-    id: 3,
-    image:
-      "https://img.freepik.com/free-photo/cute-ai-generated-cartoon-bunny_23-2150288883.jpg?t=st=1721294846~exp=1721298446~hmac=fe51e1cdb9ab97ed7e31bd7e865714ad63f59590dda3c767ef985a008018f321&w=740",
-    title: "Club 3",
-    subtitle: "A Train",
-  },
-  {
-    id: 4,
-    image:
-      "https://img.freepik.com/free-photo/cute-ai-generated-cartoon-bunny_23-2150288883.jpg?t=st=1721294846~exp=1721298446~hmac=fe51e1cdb9ab97ed7e31bd7e865714ad63f59590dda3c767ef985a008018f321&w=740",
-    title: "Club 4",
-    subtitle: "Black Noir",
-  },
-];
 
 function Content() {
   const navigate = useNavigate();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [club, setClub] = useState([]);
+  const [booking, setBooking] = useState([]);
+  const [bookingLength, setBookingLength] = useState(6);
 
   const handleOpenDialog = () => setIsDialogOpen(true);
   const handleCloseDialog = () => {
@@ -57,19 +32,39 @@ function Content() {
     if (!token) {
       navigate("/");
     }
+    checkSubscription();
     getAllClubs();
+    getAllBookings();
   }, []);
 
+  const checkSubscription = async () => {
+    let res = await checkSubscriptionApi();
+    if (res.statusCode != 200) {
+      navigate("/");
+    }
+    console.log(res);
+  };
+
+  const getAllBookings = async () => {
+    let res = await getOwnerBooking();
+
+    setBooking(res);
+  };
+
   const getAllClubs = async () => {
-    let res = await getOwnerClubs(2);
+    let res = await getOwnerClubs();
     //catch error
     if (res.status === 400) {
       console.log(res.data);
       return;
     }
-    console.log(res);
 
     setClub(res);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, "yyyy-MM-dd HH:mm");
   };
 
   return (
@@ -156,43 +151,63 @@ function Content() {
           )}
         </div>
 
-        <div className="w-2/3 mt-[35px]">
+        <div className="w-full mt-[35px] ">
           <div className="flex">
             <h1 className="text-2xl font-semibold">Booking Management</h1>
-            <p className="ml-auto">View All</p>
           </div>
-
-          <div className="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative">
+          <div className="mt-10 overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative">
             <table className="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
               <thead>
                 <tr className="text-left">
                   <th className="py-2 px-3 sticky top-0 border-b border-gray-200 ">
-                    Customer Name
+                    FullName
                   </th>
                   <th className="py-2 px-3 sticky top-0 border-b border-gray-200 ">
-                    Started Time
+                    Email
                   </th>
                   <th className="py-2 px-3 sticky top-0 border-b border-gray-200 ">
-                    Ended Time
+                    phoneNumber
                   </th>
                   <th className="py-2 px-3 sticky top-0 border-b border-gray-200 ">
-                    Price
+                    Start Time
+                  </th>
+                  <th className="py-2 px-3 sticky top-0 border-b border-gray-200 ">
+                    End Time
+                  </th>
+                  <th className="py-2 px-3 sticky top-0 border-b border-gray-200 ">
+                    Amount
+                  </th>
+                  <th className="py-2 px-3 sticky top-0 border-b border-gray-200 ">
+                    Type
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {clubs.slice(0, 4).map((club) => (
-                  <tr key={club.id} className="border-t border-gray-200">
-                    <td className="px-4 py-3">{club.id}</td>
-                    <td className="px-4 py-3">{club.title}</td>
-                    <td className="px-4 py-3">{club.subtitle}</td>
-                    <td className="px-4 py-3 text-[#16B364]">
-                      {club.subtitle}
+                {booking.slice(0, bookingLength).map((booking) => (
+                  <tr key={booking.id} className="border-t border-gray-200">
+                    <td className="px-4 py-3">{booking.account.fullName}</td>
+                    <td className="px-4 py-3">{booking.account.email}</td>
+                    <td className="px-4 py-3">{booking.account.phoneNumber}</td>
+                    <td className="px-4 py-3">
+                      {formatDate(booking.startTime)}
                     </td>
+                    <td className="px-4 py-3">{formatDate(booking.endTime)}</td>
+                    <td className="px-4 py-3 text-green-500">
+                      {booking.amount}
+                    </td>
+                    <td className="px-4 py-3">{booking.type}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+          <div className="flex justify-end mt-4">
+            <button
+              onClick={() => setBookingLength(bookingLength + 6)}
+              className="px-4 py-2 bg-[#DF6951] text-white rounded-lg"
+            >
+              Show more
+            </button>
           </div>
         </div>
       </div>
