@@ -3,12 +3,20 @@ import AboutImage from "./img/aboutImage.png"
 import BannerAbout from "./img/bannerAbout.png"
 import TournamentImage from "./img/tournamentImage.png"
 import gallery from "./img/gallery.png"
+import { Link } from 'react-router-dom';
+import Header from '../components/header/Header';
+import aboutHeader from "./img/aboutHeader.png"
 
 const AboutUs = () => {
   return (
     <div>
+      <div className='relative'>
+        <img className='h-[476px] w-full object-cover' src={aboutHeader} alt="" />
+        <Header />
+      </div>
+
       {/* title about */}
-      <div className='flex items-center justify-center gap-[50px] pl-[100px] mt-[100px] pr-[40px]'>
+      <div className='flex items-center justify-center gap-[50px] pl-[100px] mt-[60px] pr-[40px]'>
         <div>
           <h3 className='text-[#DF6951] font-[Poppins] font-bold text-[18px]'>PROMOTION</h3>
           <h1 className='text-[#181E4B] leading-[60px] font-extrabold text-[50px] text-left mt-[2px] font-serif w-[639px]'>We Provide You Best Standard Courts</h1>

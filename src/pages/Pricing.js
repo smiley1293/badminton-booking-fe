@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import check_icon from "./img/check_icon.png"
-import HeaderOutside from '../components/header/HeaderOutsite';
 import { checkSubscriptionApi, subscriptionApi } from '../services/SubscriptionApi';
 import { useState } from 'react';
 import { paymentApi } from '../services/PaymentApi';
 import { toast } from 'react-toastify'
 import Modal from '../components/other/modal.js'
-
+import Header from '../components/header/Header';
+import pricingBanner from "../components/header/img/pricing_image.png"
 
 const Pricing = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -165,7 +165,10 @@ const Pricing = () => {
   )
   return (
     <div>
-      <HeaderOutside></HeaderOutside>
+      <div className='relative'>
+        <img className='h-[476px] w-full object-cover' src={pricingBanner} alt="" />
+        <Header />
+      </div>
       {displayPricing}
     </div>
   );

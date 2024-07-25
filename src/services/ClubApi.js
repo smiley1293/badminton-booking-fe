@@ -8,4 +8,12 @@ const createClub = (club) => {
   return axios.post("/club/create", club);
 };
 
-export { getOwnerClubs, createClub };
+const fetchAllClubs = () => {
+  return axios.get('club/get-all')
+}
+
+const fetchClubById = (id) => {
+  return axios.get(`club/get/${id}`)
+}
+
+export { getOwnerClubs, createClub, fetchAllClubs, fetchClubById };

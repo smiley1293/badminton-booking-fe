@@ -13,7 +13,6 @@ function App() {
   return (
     <div className="App ">
       <Header></Header>
-      <CategoryIntro></CategoryIntro>
       <ContentHome></ContentHome>
     </div>
   );

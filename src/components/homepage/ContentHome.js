@@ -2,10 +2,37 @@ import React from 'react';
 import DesImage from './img/DesImage.png'
 import Banner from "./img/Banner.png"
 import BannerIcon from "./img/BannerIcon.png"
+import Header from '../header/Header';
+import headerImage from "../header/img/headerImage.png"
+import waveIcon from "../header/img/waveIcon.png"
+import peopleLike from "../header/img/peopleLike.png"
 
+import { Link } from 'react-router-dom';
+import CategoryIntro from './CategoryIntro';
 const ContentHome = () => {
   return (
     <div>
+      <div className='relative'>
+        <img src={headerImage} alt="" />
+        <Header />
+        {/* header content */}
+        <div className='absolute top-[200px] left-[200px]'>
+          <img src={waveIcon} alt="" />
+          <h1 className='font-extrabold font-[Poppins] text-[58px] w-[631px] text-left text-white'>No matter where you’re playing, we’ll take you there</h1>
+          <div className='bg-[#939697] relative rounded-[6px] w-[600px] flex items-center mt-[30px] justify-center py-[37px] gap-[40px] '>
+            <span className='text-[20px] text-white'>Wanna play right now? Click here</span>
+            <Link to={"/reservation"} className='px-[14px] py-[15px] bg-[#ee5f43] hover:scale-110 transition-all opacity-100 text-white rounded-[5px]'>Take reservation</Link>
+          </div>
+          <div className='mt-[20px] flex items-center justify-start gap-[20px]'>
+            <img src={peopleLike} alt="" />
+            <span className='text-[13px] text-white'>2,500 people booked Badminzone in last 1 months</span>
+          </div>
+        </div>
+
+      </div>
+
+      <CategoryIntro></CategoryIntro>
+
       {/* Description */}
       <div className='flex items-center justify-center gap-[146px]'>
         <div className='flex justify-center'>
