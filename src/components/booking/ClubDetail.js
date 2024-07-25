@@ -28,13 +28,13 @@ const ClubDetail = () => {
     <div>
       {accessToken ?
         (<div>
-          <div className="mb-[190px]">
+          {/* <div className="mb-[190px]">
             <Header />
-          </div>
-          <div>
+          </div> */}
+          <div className='z-50'>
             <h1>{club.name}</h1>
             <p>Address: {club.address}</p>
-            <p>Price per Hour: {club.pricerPerHour}</p>
+            <p>Price per Hour: {(club.pricerPerHour).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
             <p>Number of Courts: {club.numberOfCourts}</p>
             <img src={club.imageLink} alt={`${club.name}`} />
             {/* Add more details as needed */}
