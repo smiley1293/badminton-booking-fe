@@ -13,13 +13,11 @@ const ClubItem = (props) => {
             alt=""
           />
         </div>
-        <h1 className="font-[Lora] font-medium text-[23px] mt-[13px] pl-[15px]">
+        <h1 className="font-[Lora] font-medium text-[23px] mt-[13px] pl-[15px] ">
           {props.name}
         </h1>
-        <div className="flex items-center gap-[5px] pl-[15px] mt-[10px]">
-
+        <div className="flex items-center gap-[5px] pl-[15px] mt-[10px] h-[30px]">
           <img className="" src={LocationIcon} alt="" />
-
           <p className="text-[#a09f9f] text-[15px]">{props.address}</p>
         </div>
         <div className="flex items-center justify-between px-[15px] mt-[30px]">
@@ -31,7 +29,7 @@ const ClubItem = (props) => {
               </span>{" "}
             </p>
           </div>
-          <div className="flex items-center justify-center gap-[3px] bg-[#E3F6EC] px-[13px] py-[5px]  rounded-[50px]">
+          <div className="flex items-center justify-center gap-[3px] bg-[#E3F6EC] px-[12px] py-[5px]  rounded-[50px]">
             <img className="h-[28px] w-[28px]" src={OwnerIcon} alt="" />
             <p className="text-[#309555] ">{props.ownerName}</p>
           </div>
