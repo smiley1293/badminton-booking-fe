@@ -1,31 +1,67 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import check_icon from "./img/check_icon.png"
 import HeaderOutside from '../components/header/HeaderOutsite';
-import { subscriptionApi } from '../services/SubscriptionApi';
+import { checkSubscriptionApi, subscriptionApi } from '../services/SubscriptionApi';
 import { useState } from 'react';
 import { paymentApi } from '../services/PaymentApi';
 import { toast } from 'react-toastify'
+import Modal from '../components/other/modal.js'
+
 
 const Pricing = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const acceptModal = () => {
+    console.log('yy')
+    handleSubscription()
+    setIsModalOpen(false);
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   const accessToken = localStorage.getItem("token");
-  const navigate = useNavigate()
+  const [upgraded, setUpgraded] = useState(false);
   const [loadingAPI, setLoadingAPI] = useState(false);
+
   useEffect(() => {
+    handleAlreadySubscribe()
   }, [])
+
+  const handleAlreadySubscribe = async () => {
+    let res = await checkSubscriptionApi()
+    console.log(res.statusCode)
+    if (res.statusCode === 404) {
+      setUpgraded(false)
+    }
+    if (res.statusCode === 200) {
+      setUpgraded(true)
+    }
+    console.log(upgraded)
+  }
 
   const handleSubscription = async () => {
     setLoadingAPI(true);
-    let res = await subscriptionApi(2)
-    if (res.status === 402) {
-      let pay = await paymentApi(2, res.data, true)
-      if(pay){
+    let res = await subscriptionApi()
+    console.log(res)
+    if (res){
+      toast.success("Your subscription is upgraded")
+      setUpgraded(true)
+    }
+    else if (res.status === 402) {
+      let pay = await paymentApi(res.data, true)
+      if (pay) {
         console.log(pay)
         window.location.href = pay
       }
     }
     setLoadingAPI(false);
   }
+
   const notification = () => {
     return (
       <div>
@@ -36,6 +72,11 @@ const Pricing = () => {
 
   const displayPricing = (
     <div className='pricing_container mt-[66px] '>
+      <Modal isOpen={isModalOpen} closeModal={closeModal} acceptModal={acceptModal}>
+        <h2 className='font-[900] text-[20px]'>Confirmation</h2>
+        <p>Are you sure to continue purchase. </p>
+        <p className='text-[12px] text-[#f58d42]'>{'('} *This may lead to payment gateway if you don't have enough balance {')'}</p>
+      </Modal>
       <h1 className='pricing_title text-center text-[72px] font-bold text-[#3D4449] tracking-[1px] leading-[50px]'>Become a club owner<span className='text-[100px]'>.</span> </h1>
       <div className=' flex justify-center  mt-[35px]'>
         <h3 className='text-center w-[614px] leading-[28px] text-[#7D7D7D] flex-shrink-0 text-[18px]'>Choose a better plan, starting from 50,000VND/month - Let’s make your account more powerful</h3>
@@ -88,9 +129,14 @@ const Pricing = () => {
                 <Link to={"/Login"} className='upgrade_btn py-[12px] px-[106px] text-[16px] text-[#3D4449] font-bold bg-[#FFD586] rounded-[12px] lg:hover:bg-[black] lg:hover:text-[#fefefe]'>Upgrade</Link>
               </button>
               :
-              <button className='  mt-[48px]'>
-                <div onClick={handleSubscription} className='upgrade_btn py-[12px] px-[106px] text-[16px] text-[#3D4449] font-bold bg-[#FFD586] rounded-[12px] lg:hover:bg-[black] lg:hover:text-[#fefefe]'>Upgrade</div>
-              </button>
+              upgraded ?
+                <button className='  mt-[48px]'>
+                  <div className='upgrade_btn py-[12px] px-[106px] text-[16px] text-[#3D4449] font-bold bg-[#FFD586] rounded-[12px] text-opacity-50'>Subscribed</div>
+                </button>
+                :
+                <button className='  mt-[48px]'>
+                  <div onClick={openModal} className='upgrade_btn py-[12px] px-[106px] text-[16px] text-[#3D4449] font-bold bg-[#FFD586] rounded-[12px] lg:hover:bg-[black] lg:hover:text-[#fefefe]'>Upgrade</div>
+                </button>
             }
           </div>
           <div className='ml-[38px] mt-[39px]'>
@@ -114,8 +160,8 @@ const Pricing = () => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   )
   return (
     <div>
