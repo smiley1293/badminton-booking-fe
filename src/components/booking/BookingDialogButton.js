@@ -34,23 +34,26 @@ const BookingDialogButton = (prop) => {
       daysOfWeek: [],
     },
   });
-
-  useEffect(() => {
-    console.log(bookingForm);
+  const handleCall = async () => {
     if (bookingForm.startTime !== "" && bookingForm.endTime !== "") {
       try {
-        const response = createBooking(bookingForm);
-        if (response.status === 200) {
-          toast.success("Booking created successfully");
-        }
-        if (response.status === 400) {
-          toast.error(response.message);
+        const response = await createBooking(bookingForm);
+        console.log(response);
+        if (response != null) {
+          toast.success("Booking successfully created");
+        } else {
+          toast.error("Failed to create booking");
         }
       } catch (error) {
         toast.error("Error creating booking");
         console.error("Error creating booking:", error);
       }
     }
+  };
+
+  useEffect(() => {
+    console.log(bookingForm);
+    handleCall();
   }, [bookingForm]);
 
   const onSubmit = async () => {
@@ -181,21 +184,28 @@ const BookingDialogButton = (prop) => {
           <div className="flex items-center space-x-5 ">
             <label className="text-black leading-none">Select Date</label>
             <div className="">
-              <DateTimePicker onChange={setDate} value={date} />
+              <DateTimePicker
+                minDate={new Date()}
+                onChange={setDate}
+                value={date}
+              />
             </div>
             {!isChecked && (
-              <div className="flex items-center space-x-5 ">
-                <label className="block text-gray-700">Number of hours</label>
-                <input
-                  id="numberOfHours"
-                  type="number"
-                  max={8}
-                  min={1}
-                  value={numberOfHours}
-                  onChange={(e) => setNumberOfHours(e.target.value)}
-                  onKeyDown={(e) => e.preventDefault()}
-                  className="block w-14 px-3  border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
+              <div>
+                <div className="flex items-center space-x-5 ">
+                  <label className="block ">Number of hours</label>
+
+                  <input
+                    id="numberOfHours"
+                    type="number"
+                    max={8}
+                    min={1}
+                    value={numberOfHours}
+                    onChange={(e) => setNumberOfHours(e.target.value)}
+                    onKeyDown={(e) => e.preventDefault()}
+                    className="block w-14 px-3  border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  />
+                </div>
               </div>
             )}
           </div>
@@ -203,7 +213,11 @@ const BookingDialogButton = (prop) => {
             <div className="flex items-center space-x-5">
               <label className="text-black leading-none">End date</label>
               <div className="">
-                <DateTimePicker onChange={setDtpEndDate} value={dtpEndDate} />
+                <DateTimePicker
+                  minDate={date}
+                  onChange={setDtpEndDate}
+                  value={dtpEndDate}
+                />
               </div>
             </div>
           )}
@@ -250,6 +264,14 @@ const BookingDialogButton = (prop) => {
                   </Toggle.Root>
                 ))}
               </div>
+            </div>
+          )}
+          {!isChecked && (
+            <div className="flex">
+              <label className="block mr-5">Total</label>
+              <label className="block text-green-500">
+                {prop.pricerPerHour * numberOfHours}đ
+              </label>
             </div>
           )}
           <Dialog.DialogClose
