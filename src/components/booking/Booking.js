@@ -15,10 +15,12 @@ const Booking = (props) => {
   const navigate = useNavigate();
   const [selectedClub, setSelectedClub] = useState(null);
 
+
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     getClubs();
+
   }, [])
 
   //click vao club
@@ -81,7 +83,7 @@ const Booking = (props) => {
               Search
             </button>
           </div>
-          <div className='mx-[60px] grid gap-x-[30px] grid-cols-3 my-[30px]'>
+          <div className='mx-[60px] grid gap-x-[30px] gap-y-[50px] grid-cols-3 my-[30px]'>
             {listClubs && listClubs.length > 0 &&
               listClubs.map((item, index) => {
                 return (

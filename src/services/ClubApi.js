@@ -32,6 +32,10 @@ const getWislist = () => {
   return axios.get('/wishlist')
 }
 
+const removeFromWishlist = (clubId) => {
+  return axios.delete('/wishlist/delete', { data: { clubId } });
+};
 
 
-export { getOwnerClubs, createClub, fetchAllClubs, fetchClubById, searchClubsbyAddress, addToWislist, getWislist };
+
+export { getOwnerClubs, createClub, fetchAllClubs, fetchClubById, searchClubsbyAddress, addToWislist, getWislist, removeFromWishlist };

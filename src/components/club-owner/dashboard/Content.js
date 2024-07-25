@@ -182,8 +182,8 @@ function Content() {
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                {booking.slice(0, bookingLength).map((booking) => (
+              {booking.length > 0 && <tbody>
+                {booking.map((booking) => (
                   <tr key={booking.id} className="border-t border-gray-200">
                     <td className="px-4 py-3">{booking.account.fullName}</td>
                     <td className="px-4 py-3">{booking.account.email}</td>
@@ -198,16 +198,11 @@ function Content() {
                     <td className="px-4 py-3">{booking.type}</td>
                   </tr>
                 ))}
-              </tbody>
+              </tbody>}
             </table>
           </div>
           <div className="flex justify-end mt-4">
-            <button
-              onClick={() => setBookingLength(bookingLength + 6)}
-              className="px-4 py-2 bg-[#DF6951] text-white rounded-lg"
-            >
-              Show more
-            </button>
+
           </div>
         </div>
       </div>

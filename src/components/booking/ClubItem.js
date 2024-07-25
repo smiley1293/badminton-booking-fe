@@ -5,7 +5,7 @@ import BookingDialogButton from "./BookingDialogButton";
 const ClubItem = (props) => {
   return (
     <div>
-      <div className="h-[460px] w-[380px] bg-[#FAF7F3] rounded-[30px]">
+      <div className="h-[485px] w-[380px] bg-[#FAF7F3] rounded-[30px]">
         <div className="flex justify-center pt-[15px] ">
           <img
             className="h-[241px] w-[350px] object-cover rounded-[15px]"
@@ -13,12 +13,14 @@ const ClubItem = (props) => {
             alt=""
           />
         </div>
-        <h1 className="font-serif font-bold text-[23px] mt-[13px] pl-[15px]">
+        <h1 className="font-[Lora] font-bold text-[23px] mt-[13px] pl-[15px]">
           {props.name}
         </h1>
         <div className="flex items-center gap-[5px] pl-[15px] mt-[10px]">
-          <img src={LocationIcon} alt="" />
-          <p>{props.address}</p>
+
+          <img className="" src={LocationIcon} alt="" />
+
+          <p className="text-[#a09f9f] text-[15px]">{props.address}</p>
         </div>
         <div className="flex items-center justify-between px-[15px] mt-[30px]">
           <div>
@@ -35,10 +37,11 @@ const ClubItem = (props) => {
             <p className="text-[#309555] ">{props.ownerName}</p>
           </div>
         </div>
+        <button onClick={props.onAddToWishlist} className='mt-[10px] p-[5px] bg-green-500 text-white rounded ml-[15px]'>
+          Add to wishlist
+        </button>
       </div>
-      <button onClick={props.onAddToWishlist} className='mt-[10px] p-[5px] bg-green-500 text-white rounded'>
-        Add to Wishlist
-      </button>
+
     </div>
   );
 };
