@@ -38,6 +38,7 @@ const Booking = (props) => {
                 address={item.address}
                 pricerPerHour={item.pricerPerHour}
                 ownerName={item.owner.fullName}
+                id={item.id}
               />
             )
           })

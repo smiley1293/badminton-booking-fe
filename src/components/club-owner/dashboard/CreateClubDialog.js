@@ -27,7 +27,6 @@ const CreateClubDialog = ({ onClose }) => {
     form.append("PricerPerHour", club.PricerPerHour);
     form.append("NumberOfCourts", club.NumberOfCourts);
     form.append("Image", club.Image);
-    console.log(formData.Image, "formdata");
 
     try {
       const response = await createClub(form);
