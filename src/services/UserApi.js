@@ -12,6 +12,9 @@ const getProfileApi = () => {
     },
   });
 };
+const getOtherProfileApi = (id) => {
+  return axios.get(`/account/${id}`);
+};
 
 const updateProfileApi = (fullname, phoneNumber) => {
   const token = localStorage.getItem("token");
@@ -36,4 +39,4 @@ const registerApi = (email, password, fullname, phoneNumber) => {
   });
 };
 
-export { loginApi, getProfileApi, updateProfileApi, registerApi };
+export { loginApi, getProfileApi, getOtherProfileApi, updateProfileApi, registerApi };

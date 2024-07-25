@@ -62,6 +62,7 @@ const Booking = (props) => {
 
   return (
     <div className=''>
+
       {accessToken ?
         (<div>
           <div className='relative'>
@@ -101,6 +102,7 @@ const Booking = (props) => {
           </div>
         </div>) :
         (<Login />)}
+
     </div>
   );
 };
