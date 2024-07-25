@@ -11,6 +11,7 @@ import Profile from "./components/avatar/Profile";
 
 import PaymentCallback from "./pages/PaymentCallback";
 import ClubDetail from "./components/booking/ClubDetail";
+import Admin from "./pages/Admin";
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
   },
   {
     path: "/club/:id",
-    element: <ClubDetail />
-  }
+    element: <ClubDetail />,
+  },
+  {
+    path: "/admin",
+    element: <Admin />,
+  },
 ]);
