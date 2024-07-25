@@ -63,31 +63,6 @@ const Booking = (props) => {
   return (
     <div className=''>
 
-      <div>
-        <div className='relative'>
-          <img className='h-[476px] w-full object-cover' src={clubHeader} alt="" />
-          <Header />
-        </div>
-        <div className='mx-[60px] grid gap-x-[30px] grid-cols-3 my-[30px]'>
-          {listClubs && listClubs.length > 0 &&
-            listClubs.map((item, index) => {
-              return (
-                <div className='cursor-pointer' key={index} onClick={() => handleClubClick(item.id)}>
-                  <ClubItem
-                    imageLink={item.imageLink}
-                    name={item.name}
-                    address={item.address}
-                    pricerPerHour={item.pricerPerHour}
-                    ownerName={item.owner.fullName}
-                    id={item.id}
-                  />
-                </div>
-              )
-            })
-          }
-        </div>
-      </div>
-
       {accessToken ?
         (<div>
           <div className='relative'>
