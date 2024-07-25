@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { checkSubscriptionApi } from "../../services/UserApi";
+import avatar from "./img/avatar.png"
 
 const Avatar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -35,9 +36,9 @@ const Avatar = () => {
         className="flex items-center focus:outline-none"
       >
         <img
-          src="https://images.unsplash.com/photo-1707944605002-0142810a861d?q=80&w=1963&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src={avatar}
           alt="Avatar"
-          className="w-12 h-12 rounded-full"
+          className="w-12 h-12 object-cover rounded-full"
         />
       </button>
       {dropdownOpen && (

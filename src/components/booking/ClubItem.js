@@ -13,7 +13,7 @@ const ClubItem = (props) => {
             alt=""
           />
         </div>
-        <h1 className="font-[Lora] font-bold text-[23px] mt-[13px] pl-[15px]">
+        <h1 className="font-[Lora] font-medium text-[23px] mt-[13px] pl-[15px]">
           {props.name}
         </h1>
         <div className="flex items-center gap-[5px] pl-[15px] mt-[10px]">
@@ -25,7 +25,6 @@ const ClubItem = (props) => {
         <div className="flex items-center justify-between px-[15px] mt-[30px]">
           <div>
             <p className="font-[poppins] text-[22px] font-bold">
-              <span className="font-extrabold font-[comfortaa]">đ</span>{" "}
               {props.pricerPerHour}{" "}
               <span className="text-[#818181] font-normal text-[14px]">
                 /hour

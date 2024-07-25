@@ -92,7 +92,7 @@ const Booking = (props) => {
                       imageLink={item.imageLink}
                       name={item.name}
                       address={item.address}
-                      pricerPerHour={item.pricerPerHour}
+                      pricerPerHour={(item.pricerPerHour).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                       ownerName={item.owner.fullName}
                       onClick={() => handleClubClick(item.id)}
                       onAddToWishlist={() => handleAddToWishlist(item.id)}
