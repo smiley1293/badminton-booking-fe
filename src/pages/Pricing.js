@@ -48,17 +48,20 @@ const Pricing = () => {
     setLoadingAPI(true);
     let res = await subscriptionApi()
     console.log(res)
-    if (res){
-      toast.success("Your subscription is upgraded")
-      setUpgraded(true)
-    }
-    else if (res.status === 402) {
+    if (res.status === 402) {
       let pay = await paymentApi(res.data, true)
       if (pay) {
         console.log(pay)
         window.location.href = pay
       }
+    } else {
+      if (res) {
+        toast.success("Your subscription is upgraded")
+        setUpgraded(true)
+      }
+
     }
+
     setLoadingAPI(false);
   }
 

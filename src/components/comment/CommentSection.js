@@ -4,10 +4,11 @@ import { toast } from 'react-toastify'
 import { addCommentApi, checkValidApi, getClubCommentsApi } from "../../services/CommentApi";
 import Message from "./Comment"
 import StarRatings from "react-star-ratings";
+import BookingDialogButton from "../booking/BookingDialogButton";
 
-const ClubComment = ({ clubId }) => {
+const ClubComment = ({ clubId, pricerPerHour }) => {
   const [comments, setComment] = useState([]);
-  const [stars, setStars] = useState(0);
+  const [stars, setStars] = useState(5);
   const [validString, setValid] = useState("")
   useEffect(() => {
     CheckValid();
@@ -34,6 +35,7 @@ const ClubComment = ({ clubId }) => {
       if (res) {
         toast.info("Comment sent");
         FetchComment();
+        setValid("You have already reviewed this club")
       }
     } catch (e) {
       console.log(e);
@@ -45,13 +47,14 @@ const ClubComment = ({ clubId }) => {
       let res = await checkValidApi(clubId)
       if (res) {
         console.log(res)
-        if (res) {
+        if (res.data) {
           setValid(res.data)
         }
       }
     } catch (e) {
       console.log(e);
     }
+    console.log(validString)
   }
 
   const FetchComment = async () => {
@@ -112,7 +115,15 @@ const ClubComment = ({ clubId }) => {
                 </div>
               </Row>
             </form> : <>
-              <div className="fs-2 text-center fw-lighter">{validString}</div>
+              <div className="fs-2 text-center fw-lighter">{
+                validString.includes("$btn$") ?
+                  (
+                    <>
+                      <div>{validString.slice(0, 20)} Book to join conversation</div>
+                      <BookingDialogButton id={clubId} pricerPerHour={pricerPerHour} />
+                    </>
+                  )
+                  : validString}</div>
             </>}
           </CardBody>
           <div className="my-2" style={{ overflowY: "auto", height: "65vh" }}>

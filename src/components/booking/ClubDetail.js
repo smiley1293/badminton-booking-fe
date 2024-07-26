@@ -72,7 +72,7 @@ const ClubDetail = () => {
 
         </div>) : (<Login />)}
       <div className='ml-[90px] mt-[40px]'>
-        <ClubComment clubId={id} />
+        <ClubComment clubId={id} pricerPerHour={club.pricerPerHour}/>
       </div>
     </div>
   );

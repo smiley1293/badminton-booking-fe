@@ -72,19 +72,6 @@ const Login = () => {
             <h1 className="login_title text-center text-[56px] leading-tight tracking-tight text-[#3D4449] md:text-[56px] mb-[30px]">
               Sign in to us
             </h1>
-            <div className=" w-[380px] google_signin flex gap-[15px] justify-center items-center border rounded-[50px] py-[10px] border-[#3D4449] border-opacity-35 cursor-pointer">
-              <img
-                className="w-[28px] h-[28px]"
-                src={google_icon}
-                alt="google"
-              />
-              <p>Sign in with Google</p>
-            </div>
-            <div className="mt-[10px] text-[14px] flex justify-center items-center gap-[8px] opacity-40">
-              <img className="w-[80px] h-[0.5px]" src={line} alt="" />
-              <p>or sign in with email</p>
-              <img className="w-[80px] h-[0.5px]" src={line} alt="" />
-            </div>
             {/* <div className='text-red-500'>Chỗ cho báo lỗi</div> */}
             <form className="space-y-4 md:space-y-6" action="#">
               <div className="mt-[70px]">
@@ -113,14 +100,14 @@ const Login = () => {
                   >
                     Password
                   </label>
-                  <div className="flex items-center justify-between">
+                  {/* <div className="flex items-center justify-between">
                     <Link
                       className="underline mb-2 text-[13px] font-medium text-[#3D4449] opacity-60 hover:underline dark:text-primary-500"
                       to={"#"}
                     >
                       Forgot your password?
                     </Link>
-                  </div>
+                  </div> */}
                 </div>
 
                 <input

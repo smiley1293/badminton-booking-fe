@@ -11,8 +11,8 @@ import { toast } from "react-toastify";
 
 const BookingDialogButton = (prop) => {
   const [date, setDate] = useState(new Date());
-  const [dtpStartHour, setDtpStartHour] = useState(7);
-  const [dtpEndHour, setDtpEndHour] = useState(7);
+  const [dtpStartHour, setDtpStartHour] = useState(8);
+  const [dtpEndHour, setDtpEndHour] = useState(8);
   const [numberOfCourts, setNumberOfCourts] = useState(1);
   const [toggleDayState, setToggleDayState] = useState(
     new Array(7).fill(false)
@@ -31,10 +31,11 @@ const BookingDialogButton = (prop) => {
       daysOfWeek: [],
     },
   });
-  const handleCall = async () => {
-    if (bookingForm.startTime !== "" && bookingForm.endTime !== "") {
+  const handleCall = async (obj) => {
+    console.log(obj)
+    if (obj.startTime !== "" && obj.endTime !== "") {
       try {
-        const response = await createBooking(bookingForm);
+        const response = await createBooking(obj);
         console.log(response);
         if (response.status !== 200) {
           if (response.data) {
@@ -55,19 +56,22 @@ const BookingDialogButton = (prop) => {
     }
   };
 
-  useEffect(() => {
-    console.log(bookingForm);
-  }, [bookingForm]);
-
   const onSubmit = async () => {
     if (dtpStartHour <= 0 || dtpEndHour <= 0) return
-    let startHour = dtpStartHour.toString()
-    if (dtpStartHour.length === 1) {
-      startHour = '0' + startHour.toString();
+    let startHour = ''
+    if (dtpStartHour.length !== 1) {
+      startHour = dtpStartHour.toString()
     }
-    let endHour = dtpEndHour.toString()
-    if (dtpEndHour.length === 1) {
-      endHour = '0' + endHour.toString();
+    else {
+      startHour = '0' + dtpStartHour.toString();
+    }
+
+    let endHour = ''
+    if (dtpEndHour.length !== 1) {
+      endHour = dtpEndHour.toString()
+    }
+    else {
+      endHour = '0' + dtpEndHour.toString();
     }
     console.log(startHour)
     console.log(endHour)
@@ -105,19 +109,19 @@ const BookingDialogButton = (prop) => {
       toast.error("Please select days in a week")
       return
     }
-    setBookingForm((prevForm) => ({
-      ...prevForm,
+    const obj = {
       startTime: startDate,
       endTime: endDate,
       numberOfCourts: numberOfCourts,
+      isPrepaid: true,
+      clubId: parseInt(prop.id),
       type: isChecked ? "WEEKLY" : "ONCE",
       recurringType: {
         id: 0,
         daysOfWeek: selectedDays,
       },
-    }));
-    console.log(bookingForm)
-    handleCall();
+    }
+    handleCall(obj);
   };
 
   // toggle days
@@ -178,11 +182,16 @@ const BookingDialogButton = (prop) => {
             <div className="">
               <input
                 type="number"
-                max={24}
-                min={0}
+                max={22}
+                min={8}
                 value={dtpStartHour}
                 onChange={(e) => {
                   if (e.target.value < 24 && e.target.value > 0) setDtpStartHour(e.target.value);
+                  else setDtpStartHour(8)
+                  if (dtpEndHour <= dtpStartHour) {
+                    let value = parseInt(dtpStartHour) + 1
+                    setDtpEndHour(value)
+                  }
                 }} />
             </div>
           </div>
@@ -191,12 +200,13 @@ const BookingDialogButton = (prop) => {
             <div className="">
               <input
                 type="number"
-                max={24}
-                min={0}
+                max={22}
+                min={dtpStartHour}
                 value={dtpEndHour}
                 onChange={(e) => {
 
                   if (e.target.value < 24 && e.target.value > 0) setDtpEndHour(e.target.value);
+                  else setDtpEndHour(8)
                 }} />
             </div>
           </div>
@@ -245,7 +255,7 @@ const BookingDialogButton = (prop) => {
           <div className="flex">
             <label className="block mr-5">Total</label>
             <label className="block text-green-500">
-              {prop.pricerPerHour * (dtpEndHour - dtpStartHour)}đ
+              {prop.pricerPerHour * numberOfCourts * (dtpEndHour - dtpStartHour + 1)}đ
             </label>
           </div>
           <Dialog.DialogClose
