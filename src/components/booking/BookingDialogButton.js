@@ -8,16 +8,38 @@ import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import { createBooking } from "../../services/BookingApi";
 import { toast } from "react-toastify";
+import { paymentApi } from "../../services/PaymentApi";
 
 const BookingDialogButton = (prop) => {
   const [date, setDate] = useState(new Date());
   const [dtpStartHour, setDtpStartHour] = useState(8);
-  const [dtpEndHour, setDtpEndHour] = useState(8);
+  const [dtpHourInUse, setDtpHourInUse] = useState(1);
   const [numberOfCourts, setNumberOfCourts] = useState(1);
+  const [priceDay, setPriceDay] = useState(1);
   const [toggleDayState, setToggleDayState] = useState(
     new Array(7).fill(false)
   );
+  let selectedDays = [];
   const [isChecked, setIsChecked] = useState(false);
+  useEffect(() => {
+    selectedDays = toggleDayState
+      .map((day, index) => {
+        if (day) {
+          return [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+          ][index];
+        }
+        return "";
+      })
+      .filter((day) => day !== "");
+      setPriceDay(selectedDays.length)
+  }, [toggleDayState])
 
   const [bookingForm, setBookingForm] = useState({
     startTime: "",
@@ -37,16 +59,24 @@ const BookingDialogButton = (prop) => {
       try {
         const response = await createBooking(obj);
         console.log(response);
-        if (response.status !== 200) {
-          if (response.data) {
-            toast.error(response.data);
+        if (response.status === 402) {
+          let pay = await paymentApi(response.data, true)
+          if (pay) {
+            console.log(pay)
+            toast.error("Please add some money in")
           }
-          else if (response.status == 400) {
-            toast.error("Failed to create booking");
+        } else {
+          if (response.status !== 200) {
+            if (response.data) {
+              toast.error(response.data);
+            }
+            else if (response.status == 400) {
+              toast.error("Failed to create booking");
+            }
           }
-        }
-        if (response.id) {
-          toast.success("Booking successfully created");
+          if (response.id) {
+            toast.success("Booking successfully created");
+          }
         }
 
       } catch (error) {
@@ -57,9 +87,11 @@ const BookingDialogButton = (prop) => {
   };
 
   const onSubmit = async () => {
-    if (dtpStartHour <= 0 || dtpEndHour <= 0) return
+    if (dtpStartHour <= 0 || dtpHourInUse < 1) return
+    let dtpEndHour = parseInt(dtpStartHour) + parseInt(dtpHourInUse)
+    console.log(dtpEndHour)
     let startHour = ''
-    if (dtpStartHour.length !== 1) {
+    if (dtpStartHour >= 10) {
       startHour = dtpStartHour.toString()
     }
     else {
@@ -67,7 +99,7 @@ const BookingDialogButton = (prop) => {
     }
 
     let endHour = ''
-    if (dtpEndHour.length !== 1) {
+    if (dtpEndHour >= 10) {
       endHour = dtpEndHour.toString()
     }
     else {
@@ -88,23 +120,7 @@ const BookingDialogButton = (prop) => {
 
     const startDate = `${year}-${month}-${day}T${startHour}:00:00.981Z`
     const endDate = `${year}-${month}-${day}T${endHour}:00:00.981Z`
-    let selectedDays = [];
-    selectedDays = toggleDayState
-      .map((day, index) => {
-        if (day) {
-          return [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday",
-          ][index];
-        }
-        return "";
-      })
-      .filter((day) => day !== "");
+
     if (selectedDays.length == 0) {
       toast.error("Please select days in a week")
       return
@@ -188,25 +204,20 @@ const BookingDialogButton = (prop) => {
                 onChange={(e) => {
                   if (e.target.value < 24 && e.target.value > 0) setDtpStartHour(e.target.value);
                   else setDtpStartHour(8)
-                  if (dtpEndHour <= dtpStartHour) {
-                    let value = parseInt(dtpStartHour) + 1
-                    setDtpEndHour(value)
-                  }
                 }} />
             </div>
           </div>
           <div className="flex items-center space-x-5">
-            <label className="text-black leading-none">End Hour</label>
+            <label className="text-black leading-none">Hour In Use</label>
             <div className="">
               <input
                 type="number"
                 max={22}
-                min={dtpStartHour}
-                value={dtpEndHour}
+                min={1}
+                value={dtpHourInUse}
                 onChange={(e) => {
-
-                  if (e.target.value < 24 && e.target.value > 0) setDtpEndHour(e.target.value);
-                  else setDtpEndHour(8)
+                  if (e.target.value < 24 && e.target.value > 0) setDtpHourInUse(e.target.value);
+                  else setDtpHourInUse(1)
                 }} />
             </div>
           </div>
@@ -255,7 +266,7 @@ const BookingDialogButton = (prop) => {
           <div className="flex">
             <label className="block mr-5">Total</label>
             <label className="block text-green-500">
-              {prop.pricerPerHour * numberOfCourts * (dtpEndHour - dtpStartHour + 1)}đ
+              {prop.pricerPerHour * numberOfCourts * dtpHourInUse * priceDay}đ
             </label>
           </div>
           <Dialog.DialogClose

@@ -5,6 +5,7 @@ import { getWislist } from '../../services/ClubApi';
 import ClubItem from '../booking/ClubItem';
 import avatar from "./img/avatar.png"
 import { useNavigate } from 'react-router-dom';
+import { addPayment } from '../../services/PaymentApi';
 
 const Profile = (props) => {
   const [profile, setProfile] = useState({ fullName: "", phoneNumber: "" });
@@ -98,7 +99,7 @@ const Profile = (props) => {
           </div>
           <div className='ml-[50px] mt-[30px]'>
             <button className='bg-[#1DB954] text-white px-[15px] rounded-[5px] py-[6px] mr-[30px]' type="submit">Save</button>
-            <button className='bg-transparent border-white border rounded-[5px] text-white px-[15px] py-[6px] mr-[30px]' type="button" onClick={() => setIsEditing(false)}>Hủy</button>
+            <button className='bg-transparent border-white border rounded-[5px] text-white px-[15px] py-[6px] mr-[30px]' type="button" onClick={() => setIsEditing()}>Hủy</button>
           </div>
         </form>
       ) : (
@@ -115,6 +116,22 @@ const Profile = (props) => {
             </div>
             <div>
               <button className='bg-[#ba5d07] px-[15px] py-[5px] ml-[220px] hover:bg-[#e2852e] rounded-[5px]' onClick={() => setIsEditing(true)}>Edit</button>
+              <button className='bg-[#ba5d07] px-[15px] py-[5px] ml-[220px] hover:bg-[#e2852e] rounded-[5px]' onClick={() => {
+                const addMoney = async (amount) => {
+                  let res = await addPayment(amount)
+                  if (res) {
+                    window.location.href = res
+                  }
+                }
+                let value = prompt("Money to add")
+                var amount = parseInt(value);
+
+                if (!isNaN(amount) && value === '' + amount) {
+                  addMoney(amount)
+                }
+                else
+                  alert("amount is not an integer")
+              }}>Add Money</button>
             </div>
           </div>
           <hr className='bg-[#B2B2B2] border-[#868686] mt-[30px]' />

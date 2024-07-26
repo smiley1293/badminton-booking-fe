@@ -7,4 +7,10 @@ const paymentApi = (amount, isPayingForSubscription = false) => {
     })
 }
 
-export { paymentApi }
+const addPayment = (amount) => {
+    return axios.post("/vnpay/get-pay-url",{
+        amount
+    })
+}
+
+export { paymentApi, addPayment }
