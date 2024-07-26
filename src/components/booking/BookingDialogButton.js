@@ -38,7 +38,7 @@ const BookingDialogButton = (prop) => {
         return "";
       })
       .filter((day) => day !== "");
-      setPriceDay(selectedDays.length)
+    setPriceDay(selectedDays.length)
   }, [toggleDayState])
 
   const [bookingForm, setBookingForm] = useState({
@@ -120,8 +120,25 @@ const BookingDialogButton = (prop) => {
 
     const startDate = `${year}-${month}-${day}T${startHour}:00:00.981Z`
     const endDate = `${year}-${month}-${day}T${endHour}:00:00.981Z`
-
-    if (selectedDays.length == 0) {
+    console.log(selectedDays)
+    let tempt = []
+    tempt = toggleDayState
+      .map((day, index) => {
+        if (day) {
+          return [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+          ][index];
+        }
+        return "";
+      })
+      .filter((day) => day !== "");
+    if (tempt.length === 0) {
       toast.error("Please select days in a week")
       return
     }
@@ -134,10 +151,13 @@ const BookingDialogButton = (prop) => {
       type: isChecked ? "WEEKLY" : "ONCE",
       recurringType: {
         id: 0,
-        daysOfWeek: selectedDays,
+        daysOfWeek: tempt,
       },
     }
     handleCall(obj);
+    setToggleDayState(
+      new Array(7).fill(false)
+    );
   };
 
   // toggle days
